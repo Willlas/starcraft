@@ -40,10 +40,9 @@ Template.starcraft.events({
     'keydown textarea': function (e) {
 
         //allow tabing in textarea
-        if(e.which == 9){
+        if(e.which == 9 || (e.which > 47 && e.which < 58)){
             e.preventDefault();
-        }
-        let clonedTable = Template.instance().table.get('table');
+        } else { let clonedTable = Template.instance().table.get('table');
 
         clonedTable.push({
                 'key': e.which,
@@ -70,6 +69,7 @@ Template.starcraft.events({
         var positionMinum1 = clonedTable.findIndex(x => x.key != 0 && x.moment >= lastMomentMinum1);
 
         Template.instance().puntualApm.set( (clonedTable.length - positionMinum1)*60);
-        console.log(e.which, Date.now());
+        console.log(e.which, Date.now());}
+        
     }
 });
