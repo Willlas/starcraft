@@ -12,6 +12,8 @@ Template.starcraft.onCreated(function () {
     this.hello.set('hello there');
     this.apm = new ReactiveVar();
     this.apm.set(0);
+    this.puntualApm = new ReactiveVar();
+    this.puntualApm.set(0);
 
 });
 
@@ -28,6 +30,9 @@ Template.starcraft.helpers({
     },
     APM: function(){
         return Template.instance().apm.get('apm');
+    },
+    puntualAPM: function(){
+        return Template.instance().puntualApm.get('puntualApm');
     }
 });
 
@@ -51,9 +56,20 @@ Template.starcraft.events({
 
         Template.instance().apm.set(
             (clonedTable.length /
-                ((clonedTable[clonedTable.length -1].moment - clonedTable[1].moment + 1)/1000))
+                ((clonedTable[clonedTable.length - 1].moment - clonedTable[1].moment + 1)/1000))
                 * 60
         );
+        
+
+        var lastMoment = clonedTable[clonedTable.length - 1].moment;
+        //var lastMomentMinum1 = lastMoment - 60000;
+        var lastMomentMinum1 = lastMoment - 1000;
+        // var positionMinum1 = clonedTable.find(function(moment){
+        //     moment > lastMomentMinum1;
+        // });
+        var positionMinum1 = clonedTable.findIndex(x => x.key != 0 && x.moment >= lastMomentMinum1);
+
+        Template.instance().puntualApm.set( (clonedTable.length - positionMinum1)*60);
         console.log(e.which, Date.now());
     }
 });
